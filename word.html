@@ -142,8 +142,9 @@
 
 
         .word-display {
-            height: 3.5rem; /* Slightly increased height */
-            line-height: 3.5rem; /* Vertically center text */
+            height: auto; /* Allow height to adjust based on content */
+            min-height: 3.5rem; /* Ensure minimum height */
+            line-height: 1.5; /* Adjust line height for wrapping */
             border: none; /* Remove border */
             border-radius: 0.75rem; /* More rounded */
             text-align: center;
@@ -153,23 +154,24 @@
             background-color: #e0e5ec; /* Match container background */
             box-shadow: inset 5px 5px 10px #bebebe,
                         inset -5px -5px 10px #ffffff; /* Inset shadow for "pressed" look */
-            overflow: hidden;
-            white-space: nowrap;
-            display: flex;
+            overflow-wrap: break-word; /* Allow long words to break and wrap */
+            word-wrap: break-word; /* Fallback for older browsers */
+            white-space: normal; /* Allow text to wrap normally */
+            display: flex; /* Use flexbox for centering */
             align-items: center;
             justify-content: center;
             margin-bottom: 1.5rem; /* Increased spacing */
             transition: color 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease; /* Smooth transition */
-            padding: 0 1rem; /* Added horizontal padding */
-            letter-spacing: 0.5rem; /* Space out letters/underscores */
+            padding: 1rem; /* Increased padding to prevent text touching edges */
+            letter-spacing: 0.3rem; /* Reduced letter spacing slightly */
         }
 
-        /* Responsive font size for word display */
+        /* Responsive font size and letter spacing for word display */
         @media (min-width: 640px) { /* Small screens and up */
             .word-display {
                 font-size: 2em;
-                height: 4rem;
-                line-height: 4rem;
+                min-height: 4rem;
+                letter-spacing: 0.5rem; /* Restore original spacing on larger screens */
             }
         }
 
