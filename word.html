@@ -270,6 +270,32 @@
                         inset -3px -3px 7px #ffffff; /* Inset shadow */
          }
 
+          /* Change Word Button */
+         .change-word-button {
+            width: 100%;
+            background-color: #94a3b8; /* Tailwind slate-400 */
+            color: #334155; /* Tailwind slate-700 */
+            padding: 0.75rem;
+            border-radius: 0.75rem; /* More rounded */
+            margin-top: 1rem; /* Space above */
+            margin-bottom: 1.5rem; /* Space below */
+            transition: background-color 0.2s ease, box-shadow 0.2s ease, color 0.3s ease; /* Smooth transition */
+            box-shadow: 5px 5px 10px #bebebe,
+                        -5px -5px 10px #ffffff; /* Soft Neumorphic shadow */
+             font-weight: 600; /* Quicksand Semi-bold */
+         }
+         .change-word-button:hover {
+            background-color: #64748b; /* Tailwind slate-500 */
+             box-shadow: 2px 2px 5px #bebebe,
+                        -2px -2px 5px #ffffff; /* Smaller shadow */
+         }
+         .change-word-button:active {
+             background-color: #475569; /* Tailwind slate-600 */
+              box-shadow: inset 3px 3px 7px #bebebe,
+                        inset -3px -3px 7px #ffffff; /* Inset shadow */
+         }
+
+
          /* Theme Toggle Button */
          .theme-toggle-button {
              position: absolute;
@@ -381,19 +407,55 @@
                         inset -3px -3px 6px #444; /* Inset dark mode shadow on active */
          }
 
-         .dark-mode .theme-toggle-button {
-             color: #bbb; /* Light icon in dark mode */
-             box-shadow: 3px 3px 7px #111,
-                        -3px -3px 7px #333; /* Dark mode shadow for the button */
+          .dark-mode .change-word-button {
+            background-color: #555; /* Dark gray */
+            color: #eee; /* Light text */
+            box-shadow: 4px 4px 8px #111,
+                        -4px -4px 8px #444; /* Dark mode shadow */
          }
-         .dark-mode .theme-toggle-button:hover {
-             color: #eee; /* Lighter icon on hover */
-             box-shadow: 1px 1px 3px #111,
-                        -1px -1px 3px #333; /* Smaller dark mode shadow on hover */
+         .dark-mode .change-word-button:hover {
+             background-color: #666; /* Slightly lighter gray on hover */
+             box-shadow: 2px 2px 4px #111,
+                        -2px -2px 4px #444; /* Smaller dark mode shadow */
          }
-         .dark-mode .theme-toggle-button:active {
-             box-shadow: inset 2px 2px 5px #111,
-                        inset -2px -2px 5px #333; /* Inset dark mode shadow on active */
+         .dark-mode .change-word-button:active {
+             background-color: #777; /* Even lighter gray on active */
+              box-shadow: inset 3px 3px 6px #111,
+                        inset -3px -3px 6px #444; /* Inset dark mode shadow on active */
+         }
+
+
+         /* Theme Toggle Button */
+         .theme-toggle-button {
+             position: absolute;
+             top: 1rem;
+             right: 1rem;
+             background-color: transparent;
+             border: none;
+             cursor: pointer;
+             font-size: 1.5em;
+             color: #475569; /* Default icon color */
+             transition: color 0.3s ease;
+             z-index: 10; /* Ensure it's above other elements */
+             display: flex; /* Use flex to center icon */
+             align-items: center;
+             justify-content: center;
+             width: 2.5rem; /* Set a fixed size for better touch target */
+             height: 2.5rem;
+             border-radius: 50%; /* Make it round */
+             box-shadow: 3px 3px 7px #bebebe,
+                        -3px -3px 7px #ffffff; /* Soft shadow for the button itself */
+         }
+
+         .theme-toggle-button:hover {
+             color: #1e293b; /* Darker color on hover */
+             box-shadow: 1px 1px 3px #bebebe,
+                        -1px -1px 3px #ffffff; /* Smaller shadow on hover */
+         }
+
+         .theme-toggle-button:active {
+             box-shadow: inset 2px 2px 5px #bebebe,
+                        inset -2px -2px 5px #ffffff; /* Inset shadow on active */
          }
 
          /* Winning Word Animation */
@@ -564,6 +626,8 @@
                     </select>
             </div>
 
+            <button id="changeWordButton" class="change-word-button">Change Word</button>
+
 
             <div id="wordDisplay" class="word-display text-xl sm:text-2xl"></div>
 
@@ -606,6 +670,7 @@
         const winningWordAnimationElement = document.getElementById('winningWordAnimation'); // Element for the animation
         const keyboard = document.getElementById('keyboard'); // Reference to the keyboard container
         const categorySelect = document.getElementById('categorySelect'); // Reference to the category dropdown
+        const changeWordButton = document.getElementById('changeWordButton'); // Reference to the Change Word button
 
 
         // Function to fetch words from JSON
@@ -684,7 +749,7 @@
         }
 
 
-        // Function to start a new game
+        // Function to start a new game (resets everything)
         function startGame() {
              if (currentCategoryWords.length === 0) {
                  messageElement.textContent = "No words available for the selected category.";
@@ -717,6 +782,48 @@
             enableGame();
 
         }
+
+        // Function to change the word without changing the category
+        function changeWord() {
+             if (currentCategoryWords.length === 0) {
+                 messageElement.textContent = "No words available for the selected category.";
+                 messageElement.className = 'message text-base sm:text-lg text-red-600';
+                 disableGame();
+                 return;
+             }
+             // Choose a new random word from the current category
+             let newSecretWord = secretWord;
+             // Ensure the new word is different from the current one if possible
+             if (currentCategoryWords.length > 1) {
+                 while (newSecretWord === secretWord) {
+                     newSecretWord = currentCategoryWords[Math.floor(Math.random() * currentCategoryWords.length)];
+                 }
+             }
+             secretWord = newSecretWord;
+
+             maskedWord = '_'.repeat(secretWord.length); // Initialize masked word with underscores
+             incorrectAttempts = 0; // Reset incorrect attempts
+             guessedLetters = []; // Clear guessed letters
+
+             // Reset the display
+             wordDisplay.textContent = maskedWord.split('').join(' '); // Display with spaces
+             messageElement.textContent = '';
+             guessesElement.textContent = `Incorrect Guesses Left: ${maxIncorrectAttempts - incorrectAttempts}`;
+             incorrectGuessesElement.textContent = 'Incorrect Guesses: ';
+             restartButton.classList.add('hidden'); // Hide restart button
+             // Reset message class - remove specific color classes
+             messageElement.className = 'message text-base sm:text-lg';
+
+             // Ensure animation element is hidden and reset
+             winningWordAnimationElement.textContent = '';
+             winningWordAnimationElement.classList.remove('animate');
+
+             createKeyboard(); // Recreate the keyboard to enable all buttons
+
+             // Enable game elements
+             enableGame();
+        }
+
 
         // Function to handle a letter guess (now accepts the letter directly)
         function handleGuess(guess) {
@@ -803,6 +910,7 @@
 
              restartButton.classList.remove('hidden'); // Show restart button
              categorySelect.disabled = false; // Enable category selection after the game
+             changeWordButton.disabled = false; // Enable change word button
         }
 
         // Function to disable game elements (e.g., if words fail to load)
@@ -811,6 +919,7 @@
              buttons.forEach(button => button.disabled = true);
              restartButton.classList.add('hidden');
              categorySelect.disabled = true;
+             changeWordButton.disabled = true; // Disable change word button
         }
 
          // Function to enable game elements
@@ -818,6 +927,7 @@
              const buttons = keyboard.querySelectorAll('button');
              buttons.forEach(button => button.disabled = false);
              categorySelect.disabled = false;
+             changeWordButton.disabled = false; // Enable change word button
         }
 
 
@@ -871,6 +981,7 @@
             updateCategoryWords(); // Update words list when category changes
             startGame(); // Start a new game with the selected category
         });
+        changeWordButton.addEventListener('click', changeWord); // Add event listener for Change Word button
 
 
         // Fetch words and apply theme when the page loads
