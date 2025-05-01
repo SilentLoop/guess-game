@@ -326,13 +326,6 @@
              color: #bbb; /* Lighter text */
          }
 
-         .dark-mode .guess-display { /* This style is for the number game, but kept for consistency if needed */
-             background-color: #222; /* Match container background */
-             color: #eee; /* Light text */
-             box-shadow: inset 4px 4px 8px #111,
-                        inset -4px -4px 8px #333; /* Dark mode inset shadow */
-         }
-
          .dark-mode .word-display {
              background-color: #222; /* Match container background */
              color: #eee; /* Light text */
@@ -383,7 +376,7 @@
          .dark-mode .restart-button:active {
              background-color: #555; /* Even lighter gray on active */
               box-shadow: inset 3px 3px 6px #111,
-                        inset -3px -3px 6px #444; /* Inset dark mode shadow */
+                        inset -3px -3px 6px #444; /* Inset dark mode shadow on active */
          }
 
          .dark-mode .theme-toggle-button {
@@ -493,6 +486,56 @@
          }
 
 
+         /* Category Selection */
+         .category-selection {
+             margin-bottom: 1.5rem;
+             text-align: center;
+         }
+
+         .category-selection label {
+             font-family: 'Quicksand', sans-serif;
+             font-weight: 600;
+             color: #334155;
+             margin-right: 0.5rem;
+             transition: color 0.3s ease;
+         }
+
+         .category-selection select {
+             padding: 0.5rem;
+             border-radius: 0.5rem;
+             border: none;
+             background-color: #e0e5ec;
+             box-shadow: inset 2px 2px 5px #bebebe,
+                         inset -2px -2px 5px #ffffff;
+             font-family: 'Quicksand', sans-serif;
+             color: #1e293b;
+             cursor: pointer;
+             transition: all 0.2s ease;
+         }
+
+         .category-selection select:focus {
+             outline: none;
+             box-shadow: inset 1px 1px 3px #bebebe,
+                         inset -1px -1px 3px #ffffff;
+         }
+
+         /* Dark Mode Category Selection */
+         .dark-mode .category-selection label {
+             color: #bbb;
+         }
+
+         .dark-mode .category-selection select {
+             background-color: #222;
+             color: #eee;
+             box-shadow: inset 2px 2px 5px #111,
+                         inset -2px -2px 5px #333;
+         }
+         .dark-mode .category-selection select:focus {
+              box-shadow: inset 1px 1px 3px #111,
+                         inset -1px -1px 3px #333;
+         }
+
+
     </style>
 </head>
 <body>
@@ -512,6 +555,14 @@
             </button>
 
             <h1 class="text-xl sm:text-2xl font-bold">Guess the Word!</h1>
+
+            <div class="category-selection">
+                <label for="categorySelect">Choose a Category:</label>
+                <select id="categorySelect">
+                    </select>
+            </div>
+
+
             <div id="wordDisplay" class="word-display text-xl sm:text-2xl"></div>
 
              <div id="winningWordAnimation" class="winning-word-animation"></div>
@@ -533,7 +584,8 @@
     <script>
         // JavaScript for the word guessing game logic and theme toggle
 
-        const words = ["JAVASCRIPT", "HTML", "CSS", "PYTHON", "PROGRAMMING", "DEVELOPER", "CODING", "COMPUTER", "WEBSITE", "GITHUB"]; // List of possible words
+        let allWordCategories = []; // Array to hold all categories and words from JSON
+        let currentCategoryWords = []; // Array to hold words for the selected category
         let secretWord; // The word the user needs to guess
         let maskedWord; // The word displayed with underscores
         let incorrectAttempts; // Counter for incorrect guesses
@@ -544,7 +596,6 @@
         const messageElement = document.getElementById('message');
         const guessesElement = document.getElementById('guesses');
         const incorrectGuessesElement = document.getElementById('incorrectGuesses');
-        // Removed references to letterInput and guessLetterButton
         const restartButton = document.getElementById('restartGame');
         const themeToggle = document.getElementById('themeToggle');
         const body = document.body; // Reference to the body element
@@ -552,6 +603,58 @@
         const gameKeyboardContainer = document.getElementById('gameKeyboardContainer'); // Reference to the keyboard container
         const winningWordAnimationElement = document.getElementById('winningWordAnimation'); // Element for the animation
         const keyboard = document.getElementById('keyboard'); // Reference to the keyboard container
+        const categorySelect = document.getElementById('categorySelect'); // Reference to the category dropdown
+
+
+        // Function to fetch words from JSON
+        async function fetchWords() {
+            try {
+                const response = await fetch('words.json');
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                allWordCategories = await response.json();
+                 populateCategories(); // Populate dropdown after fetching
+                 // Select the first category by default and start the game
+                 if (allWordCategories.length > 0) {
+                     categorySelect.value = allWordCategories[0].category;
+                     updateCategoryWords(); // Set initial category words
+                     startGame();
+                 } else {
+                     messageElement.textContent = "Error: No word categories found in words.json.";
+                     messageElement.className = 'message text-base sm:text-lg text-red-600';
+                 }
+
+            } catch (error) {
+                console.error('Error fetching words:', error);
+                messageElement.textContent = 'Error loading word list. Please try again later.';
+                messageElement.className = 'message text-base sm:text-lg text-red-600';
+                 // Disable game elements if words cannot be loaded
+                 disableGame();
+            }
+        }
+
+        // Function to populate the category dropdown
+        function populateCategories() {
+            categorySelect.innerHTML = ''; // Clear existing options
+            allWordCategories.forEach(categoryData => {
+                const option = document.createElement('option');
+                option.value = categoryData.category;
+                option.textContent = categoryData.category;
+                categorySelect.appendChild(option);
+            });
+        }
+
+        // Function to update the current category words based on selection
+        function updateCategoryWords() {
+            const selectedCategory = categorySelect.value;
+            const categoryData = allWordCategories.find(cat => cat.category === selectedCategory);
+            if (categoryData) {
+                currentCategoryWords = categoryData.words;
+            } else {
+                currentCategoryWords = []; // Fallback to empty if category not found
+            }
+        }
 
 
         // Function to create the keyboard buttons
@@ -581,8 +684,14 @@
 
         // Function to start a new game
         function startGame() {
-            // Choose a random word
-            secretWord = words[Math.floor(Math.random() * words.length)];
+             if (currentCategoryWords.length === 0) {
+                 messageElement.textContent = "No words available for the selected category.";
+                 messageElement.className = 'message text-base sm:text-lg text-red-600';
+                 disableGame();
+                 return;
+             }
+            // Choose a random word from the current category
+            secretWord = currentCategoryWords[Math.floor(Math.random() * currentCategoryWords.length)];
             maskedWord = '_'.repeat(secretWord.length); // Initialize masked word with underscores
             incorrectAttempts = 0; // Reset incorrect attempts
             guessedLetters = []; // Clear guessed letters
@@ -601,6 +710,9 @@
             winningWordAnimationElement.classList.remove('animate');
 
             createKeyboard(); // Recreate the keyboard for a new game
+
+            // Enable game elements
+            enableGame();
 
         }
 
@@ -688,7 +800,24 @@
              buttons.forEach(button => button.disabled = true);
 
              restartButton.classList.remove('hidden'); // Show restart button
+             categorySelect.disabled = false; // Enable category selection after the game
         }
+
+        // Function to disable game elements (e.g., if words fail to load)
+        function disableGame() {
+             const buttons = keyboard.querySelectorAll('button');
+             buttons.forEach(button => button.disabled = true);
+             restartButton.classList.add('hidden');
+             categorySelect.disabled = true;
+        }
+
+         // Function to enable game elements
+        function enableGame() {
+             const buttons = keyboard.querySelectorAll('button');
+             buttons.forEach(button => button.disabled = false);
+             categorySelect.disabled = false;
+        }
+
 
         // Function to toggle theme
         function toggleTheme() {
@@ -736,11 +865,16 @@
         // Add event listeners
         restartButton.addEventListener('click', startGame);
         themeToggle.addEventListener('click', toggleTheme); // Add event listener for theme toggle
+        categorySelect.addEventListener('change', function() {
+            updateCategoryWords(); // Update words list when category changes
+            startGame(); // Start a new game with the selected category
+        });
 
-        // Apply saved theme and start the game when the page loads
+
+        // Fetch words and apply theme when the page loads
         window.onload = function() {
             applyTheme(); // Apply theme preference first
-            startGame(); // Then start the game
+            fetchWords(); // Fetch words and start the game after theme is applied
         };
 
     </script>
