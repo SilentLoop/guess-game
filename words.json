@@ -1,0 +1,18 @@
+[
+  {
+    "category": "Programming",
+    "words": ["JAVASCRIPT", "PYTHON", "HTML", "CSS", "REACT", "ANGULAR", "VUEJS", "NODEJS", "DATABASE", "ALGORITHM"]
+  },
+  {
+    "category": "Animals",
+    "words": ["ELEPHANT", "TIGER", "ZEBRA", "GIRAFFE", "LION", "MONKEY", "PENGUIN", "DOLPHIN", "KANGAROO", "BUTTERFLY"]
+  },
+  {
+    "category": "Fruits",
+    "words": ["APPLE", "BANANA", "ORANGE", "GRAPE", "STRAWBERRY", "MANGO", "PINEAPPLE", "WATERMELON", "KIWI", "PEACH"]
+  },
+  {
+    "category": "Countries",
+    "words": ["NORWAY", "CANADA", "JAPAN", "BRAZIL", "INDIA", "FRANCE", "GERMANY", "AUSTRALIA", "MEXICO", "EGYPT"]
+  }
+]
