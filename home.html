@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Home</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <style>
+        /* Base styles for Soft UI/UX (Gray/Blue Palette) */
+        body {
+            font-family: 'Quicksand', sans-serif; /* Using Quicksand font as default */
+            background-color: #e0e5ec; /* Soft background color */
+            display: flex;
+            flex-direction: column; /* Stack elements vertically */
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 1rem; /* Added padding for small screens */
+            transition: background-color 0.3s ease; /* Smooth transition for theme change */
+        }
+
+        /* Container for home page content */
+        .home-container {
+            background-color: #e0e5ec; /* Match body background for "pressed in" effect */
+            padding: 3rem; /* Increased padding */
+            border-radius: 1rem; /* More rounded corners */
+            box-shadow: 7px 7px 15px #bebebe,
+                        -7px -7px 15px #ffffff; /* Soft Neumorphic shadow */
+            text-align: center;
+            max-width: 500px; /* Limit width */
+            width: 100%;
+            position: relative; /* Needed for absolute positioning of toggle button */
+             transition: background-color 0.3s ease, box-shadow 0.3s ease; /* Smooth transition */
+        }
+
+        h1 {
+            font-family: 'Lato', sans-serif; /* Using Lato font */
+            color: #334155; /* Tailwind slate-700 */
+            margin-bottom: 1.5rem; /* Space below heading */
+            font-weight: 700; /* Lato Bold */
+            font-size: 2em; /* Larger font size */
+             transition: color 0.3s ease; /* Smooth transition */
+        }
+
+        .button-container {
+            display: flex;
+            flex-direction: column; /* Stack buttons vertically by default */
+            gap: 1.5rem; /* Space between buttons */
+             margin-top: 2rem; /* Space above buttons */
+        }
+
+         @media (min-width: 640px) { /* Small screens and up */
+            .button-container {
+                flex-direction: row; /* Arrange buttons horizontally on small screens and up */
+                justify-content: center; /* Center buttons horizontally */
+            }
+         }
+
+
+        .game-button {
+            padding: 1rem 2rem; /* Padding for larger buttons */
+            font-size: 1.2em; /* Slightly larger font */
+            font-weight: 600; /* Quicksand Semi-bold */
+            border: none;
+            border-radius: 0.75rem; /* More rounded */
+            cursor: pointer;
+            transition: all 0.2s ease; /* Smooth transition for hover/active */
+            background-color: #60a5fa; /* Tailwind blue-400 */
+            color: white;
+            box-shadow: 5px 5px 10px #93c5fd,
+                        -5px -5px 10px #ffffff; /* Blue shadow */
+             font-family: 'Quicksand', sans-serif; /* Use Quicksand font */
+             text-decoration: none; /* Remove underline from links */
+             display: inline-block; /* Allow padding and margin */
+        }
+
+        .game-button:hover {
+            background-color: #3b82f6; /* Tailwind blue-500 */
+             box-shadow: 2px 2px 5px #60a5fa,
+                        -2px -2px 5px #ffffff; /* Smaller blue shadow */
+         }
+         .game-button:active {
+             background-color: #2563eb; /* Tailwind blue-600 */
+             box-shadow: inset 3px 3px 7px #60a5fa,
+                        inset -3px -3px 7px #ffffff; /* Inset blue shadow */
+         }
+
+         /* Theme Toggle Button */
+         .theme-toggle-button {
+             position: absolute;
+             top: 1rem;
+             right: 1rem;
+             background-color: transparent;
+             border: none;
+             cursor: pointer;
+             font-size: 1.5em;
+             color: #475569; /* Default icon color */
+             transition: color 0.3s ease;
+             z-index: 10; /* Ensure it's above other elements */
+             display: flex; /* Use flex to center icon */
+             align-items: center;
+             justify-content: center;
+             width: 2.5rem; /* Set a fixed size for better touch target */
+             height: 2.5rem;
+             border-radius: 50%; /* Make it round */
+             box-shadow: 3px 3px 7px #bebebe,
+                        -3px -3px 7px #ffffff; /* Soft shadow for the button itself */
+         }
+
+         .theme-toggle-button:hover {
+             color: #1e293b; /* Darker color on hover */
+             box-shadow: 1px 1px 3px #bebebe,
+                        -1px -1px 3px #ffffff; /* Smaller shadow on hover */
+         }
+
+         .theme-toggle-button:active {
+             box-shadow: inset 2px 2px 5px #bebebe,
+                        inset -2px -2px 5px #ffffff; /* Inset shadow on active */
+         }
+
+
+         /* Dark Mode Styles */
+         body.dark-mode {
+             background-color: #181818; /* Very dark gray */
+         }
+
+         .dark-mode .home-container {
+             background-color: #222; /* Dark gray container background */
+             box-shadow: 6px 6px 12px #111, /* Darker shadow */
+                        -6px -6px 12px #333; /* Lighter shadow */
+         }
+
+         .dark-mode h1 {
+             color: #eee; /* Light text */
+         }
+
+         .dark-mode .game-button {
+             background-color: #007bff; /* A standard blue for contrast */
+             color: white;
+             box-shadow: 4px 4px 8px #0056b3,
+                        -4px -4px 8px #00aaff; /* Blue shadow */
+         }
+         .dark-mode .game-button:hover {
+             background-color: #0056b3; /* Darker blue on hover */
+             box-shadow: 2px 2px 4px #0056b3,
+                        -2px -2px 4px #00aaff; /* Smaller blue shadow */
+         }
+         .dark-mode .game-button:active {
+              background-color: #003f7f; /* Even darker blue on active */
+              box-shadow: inset 3px 3px 6px #0056b3,
+                        inset -3px -3px 6px #00aaff; /* Inset blue shadow */
+         }
+
+         .dark-mode .theme-toggle-button {
+             color: #bbb; /* Light icon in dark mode */
+             box-shadow: 3px 3px 7px #111,
+                        -3px -3px 7px #333; /* Dark mode shadow for the button */
+         }
+         .dark-mode .theme-toggle-button:hover {
+             color: #eee; /* Lighter icon on hover */
+             box-shadow: 1px 1px 3px #111,
+                        -1px -1px 3px #333; /* Smaller dark mode shadow on hover */
+         }
+         .dark-mode .theme-toggle-button:active {
+             box-shadow: inset 2px 2px 5px #111,
+                        inset -2px -2px 5px #333; /* Inset dark mode shadow on active */
+         }
+
+
+    </style>
+</head>
+<body>
+    <div class="home-container">
+        <button id="themeToggle" class="theme-toggle-button" aria-label="Toggle theme">
+            <i class="ph-sun"></i> <i class="ph-moon hidden"></i>
+        </button>
+
+        <h1>Welcome to the Games!</h1>
+
+        <div class="button-container">
+            <a href="index.html" class="game-button">Guess the Number</a>
+            <a href="word.html" class="game-button">Guess the Word</a>
+        </div>
+    </div>
+
+    <script>
+        // JavaScript for theme toggle (same logic as game pages)
+
+        const themeToggle = document.getElementById('themeToggle');
+        const body = document.body; // Reference to the body element
+        const homeContainer = document.getElementById('homeContainer'); // Reference to the home container
+
+
+        // Function to toggle theme
+        function toggleTheme() {
+            body.classList.toggle('dark-mode');
+            homeContainer.classList.toggle('dark-mode'); // Toggle class on home container
+
+
+            // Update local storage
+            if (body.classList.contains('dark-mode')) {
+                localStorage.setItem('theme', 'dark');
+                // Show moon icon, hide sun icon
+                themeToggle.querySelector('.ph-moon').classList.remove('hidden');
+                themeToggle.querySelector('.ph-sun').classList.add('hidden');
+            } else {
+                localStorage.setItem('theme', 'light');
+                 // Show sun icon, hide moon icon
+                themeToggle.querySelector('.ph-sun').classList.remove('hidden');
+                themeToggle.querySelector('.ph-moon').classList.add('hidden');
+            }
+        }
+
+        // Function to apply theme on page load
+        function applyTheme() {
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'dark') {
+                body.classList.add('dark-mode');
+                homeContainer.classList.add('dark-mode');
+                 // Show moon icon, hide sun icon
+                themeToggle.querySelector('.ph-moon').classList.remove('hidden');
+                themeToggle.querySelector('.ph-sun').classList.add('hidden');
+            } else {
+                 // Ensure light mode is applied if no preference or 'light' is saved
+                 body.classList.remove('dark-mode');
+                 homeContainer.classList.remove('dark-mode');
+                 // Show sun icon, hide moon icon
+                 themeToggle.querySelector('.ph-sun').classList.remove('hidden');
+                 themeToggle.querySelector('.ph-moon').classList.add('hidden');
+            }
+        }
+
+
+        // Add event listener for theme toggle
+        themeToggle.addEventListener('click', toggleTheme);
+
+        // Apply saved theme when the page loads
+        window.onload = function() {
+            applyTheme();
+        };
+
+    </script>
+</body>
+</html>
