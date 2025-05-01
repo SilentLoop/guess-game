@@ -5,14 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Guess the Number</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
 
     <style>
         /* Base styles for Soft UI/UX (Gray/Blue Palette) */
         body {
-            font-family: 'Nunito', sans-serif; /* Using Nunito font as default */
+            font-family: 'Quicksand', sans-serif; /* Using Quicksand font as default */
             background-color: #e0e5ec; /* Soft background color */
             display: flex;
             flex-direction: column; /* Stack elements vertically in the body */
@@ -21,17 +21,20 @@
             min-height: 100vh;
             padding: 1rem; /* Added padding for small screens */
             transition: background-color 0.3s ease; /* Smooth transition for theme change */
+            overflow-x: hidden; /* Prevent horizontal scroll */
         }
 
         /* Style for the welcome text */
         .welcome-text {
-            font-family: 'Roboto', sans-serif; /* Use Roboto font */
+            font-family: 'Quicksand', sans-serif; /* Use Quicksand font */
             color: #334155; /* Tailwind slate-700 */
             text-align: center;
             margin-bottom: 2rem; /* Space below the welcome text */
             font-size: 1.1em; /* Slightly larger font */
             max-width: 600px; /* Limit width for readability */
             line-height: 1.6; /* Improve readability */
+            font-weight: 400; /* Quicksand Regular */
+            transition: color 0.3s ease; /* Smooth transition */
         }
 
         .game-wrapper {
@@ -60,8 +63,9 @@
             text-align: center;
             width: 100%; /* Take full width on small screens */
              flex: 1; /* Allow this section to grow */
-             position: relative; /* Needed for absolute positioning of toggle button */
+             position: relative; /* Needed for absolute positioning of toggle button and animation */
              transition: background-color 0.3s ease, box-shadow 0.3s ease; /* Smooth transition */
+             overflow: hidden; /* Hide animation when outside container */
         }
 
          @media (min-width: 768px) { /* Medium screens and up */
@@ -94,13 +98,13 @@
 
         /* Specific font for heading, intro text, and attempts */
         h1, #introText, #guesses {
-            font-family: 'Roboto', sans-serif;
+            font-family: 'Lato', sans-serif; /* Using Lato font */
         }
 
         h1 {
             color: #334155; /* Tailwind slate-700 */
             margin-bottom: 0.5rem; /* Reduced space below heading */
-            font-weight: 700; /* Roboto Bold */
+            font-weight: 700; /* Lato Bold */
             transition: color 0.3s ease; /* Smooth transition */
              font-size: 1.8em; /* Increased base font size */
         }
@@ -122,18 +126,18 @@
         p {
              color: #475569; /* Tailwind slate-600 */
              margin-bottom: 1.5rem; /* Increased spacing */
-             font-weight: 400; /* Nunito Regular */
+             font-weight: 400; /* Quicksand Regular */
              transition: color 0.3s ease; /* Smooth transition */
         }
 
          #introText {
-             font-weight: 400; /* Roboto Regular */
+             font-weight: 400; /* Lato Regular */
              margin-bottom: 2rem; /* Added more space below intro text */
          }
 
          #guesses {
              margin-top: 0.5rem; /* Keep original margin-top */
-             font-weight: 400; /* Roboto Regular */
+             font-weight: 400; /* Lato Regular */
          }
 
 
@@ -144,7 +148,7 @@
             border-radius: 0.75rem; /* More rounded */
             text-align: center;
             font-size: 1.8em; /* Larger font size */
-            font-weight: 700; /* Nunito Bold */
+            font-weight: 700; /* Quicksand Bold */
             color: #1e293b; /* Tailwind slate-800 */
             background-color: #e0e5ec; /* Match container background */
             box-shadow: inset 5px 5px 10px #bebebe,
@@ -179,7 +183,7 @@
         .keyboard-button {
             padding: 1rem; /* Increased padding */
             font-size: 1.3em; /* Slightly larger font */
-            font-weight: 600; /* Nunito Semi-bold */
+            font-weight: 600; /* Quicksand Semi-bold */
             border: none;
             border-radius: 0.75rem; /* More rounded */
             cursor: pointer;
@@ -219,7 +223,7 @@
             color: white;
             box-shadow: 5px 5px 10px #93c5fd,
                         -5px -5px 10px #ffffff; /* Blue shadow */
-             font-weight: 700; /* Nunito Bold */
+             font-weight: 700; /* Quicksand Bold */
              transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease; /* Smooth transition */
          }
          .submit-button:hover {
@@ -236,7 +240,7 @@
          .message {
              margin-top: 1.5rem; /* Increased spacing */
              font-size: 1.1em; /* Slightly larger font */
-             font-weight: 600; /* Nunito Semi-bold */
+             font-weight: 600; /* Quicksand Semi-bold */
              min-height: 1.5em; /* Ensure space */
              transition: color 0.3s ease; /* Smooth transition */
          }
@@ -251,7 +255,7 @@
              margin-top: 0.5rem;
              color: #64748b; /* Tailwind slate-500 */
              font-size: 0.9em;
-             /* Font set above in combined rule */
+             font-weight: 400; /* Lato Regular */
              transition: color 0.3s ease; /* Smooth transition */
          }
 
@@ -260,7 +264,7 @@
              font-size: 0.9em;
              color: #64748b; /* Tailwind slate-500 */
              min-height: 1.5em; /* Ensure space even when empty */
-             font-weight: 400; /* Nunito Regular */
+             font-weight: 400; /* Quicksand Regular */
              transition: color 0.3s ease; /* Smooth transition */
          }
 
@@ -274,7 +278,7 @@
             transition: background-color 0.2s ease, box-shadow 0.2s ease, color 0.3s ease; /* Smooth transition */
             box-shadow: 5px 5px 10px #bebebe,
                         -5px -5px 10px #ffffff; /* Soft Neumorphic shadow */
-             font-weight: 600; /* Nunito Semi-bold */
+             font-weight: 600; /* Quicksand Semi-bold */
         }
         .restart-button:hover {
             background-color: #94a3b8; /* Tailwind slate-400 */
@@ -299,85 +303,101 @@
              color: #475569; /* Default icon color */
              transition: color 0.3s ease;
              z-index: 10; /* Ensure it's above other elements */
+             display: flex; /* Use flex to center icon */
+             align-items: center;
+             justify-content: center;
+             width: 2.5rem; /* Set a fixed size for better touch target */
+             height: 2.5rem;
+             border-radius: 50%; /* Make it round */
+             box-shadow: 3px 3px 7px #bebebe,
+                        -3px -3px 7px #ffffff; /* Soft shadow for the button itself */
          }
 
          .theme-toggle-button:hover {
              color: #1e293b; /* Darker color on hover */
+             box-shadow: 1px 1px 3px #bebebe,
+                        -1px -1px 3px #ffffff; /* Smaller shadow on hover */
          }
 
-         /* Dark Mode Styles */
+         .theme-toggle-button:active {
+             box-shadow: inset 2px 2px 5px #bebebe,
+                        inset -2px -2px 5px #ffffff; /* Inset shadow on active */
+         }
+
+
+         /* Dark Mode Styles (More Realistic Black Theme) */
          body.dark-mode {
-             background-color: #1f2937; /* Dark background */
+             background-color: #181818; /* Very dark gray */
          }
 
          .dark-mode .welcome-text {
-             color: #d1d5db; /* Lighter text in dark mode */
+             color: #ddd; /* Lighter text in dark mode */
          }
 
          .dark-mode .game-info-container,
          .dark-mode .game-keyboard-container {
-             background-color: #1f2937; /* Match body background */
-             box-shadow: 7px 7px 15px #111827, /* Darker shadow */
-                        -7px -7px 15px #374151; /* Lighter shadow */
+             background-color: #222; /* Dark gray container background */
+             box-shadow: 6px 6px 12px #111, /* Darker shadow */
+                        -6px -6px 12px #333; /* Lighter shadow */
          }
 
          .dark-mode h1 {
-             color: #f3f4f6; /* Light text */
+             color: #eee; /* Light text */
          }
 
          .dark-mode p {
-             color: #d1d5db; /* Lighter text */
+             color: #bbb; /* Lighter text */
          }
 
          .dark-mode .guess-display {
-             background-color: #1f2937; /* Match container background */
-             color: #f3f4f6; /* Light text */
-             box-shadow: inset 5px 5px 10px #111827,
-                        inset -5px -5px 10px #374151; /* Dark mode inset shadow */
+             background-color: #222; /* Match container background */
+             color: #eee; /* Light text */
+             box-shadow: inset 4px 4px 8px #111,
+                        inset -4px -4px 8px #333; /* Dark mode inset shadow */
          }
 
          .dark-mode .keyboard-button {
-             background-color: #1f2937; /* Match container background */
-             color: #d1d5db; /* Lighter button text */
-             box-shadow: 5px 5px 10px #111827,
-                        -5px -5px 10px #374151; /* Dark mode shadow */
+             background-color: #222; /* Match container background */
+             color: #bbb; /* Lighter button text */
+             box-shadow: 4px 4px 8px #111,
+                        -4px -4px 8px #333; /* Dark mode shadow */
          }
 
          .dark-mode .keyboard-button:hover {
-             box-shadow: 2px 2px 5px #111827,
-                        -2px -2px 5px #374151; /* Smaller dark mode shadow on hover */
-             color: #f3f4f6; /* Even lighter text on hover */
+             box-shadow: 2px 2px 4px #111,
+                        -2px -2px 4px #333; /* Smaller dark mode shadow on hover */
+             color: #eee; /* Even lighter text on hover */
          }
 
          .dark-mode .keyboard-button:active {
-              box-shadow: inset 3px 3px 7px #111827,
-                        inset -3px -3px 7px #374151; /* Inset dark mode shadow on active */
-              color: #e5e7eb; /* Lightest text when pressed */
+              box-shadow: inset 3px 3px 6px #111,
+                        inset -3px -3px 6px #333; /* Inset dark mode shadow on active */
+              color: #fff; /* Lightest text when pressed */
          }
 
          .dark-mode .action-button {
-             color: #9ca3af; /* Tailwind gray-400 */
+             color: #999; /* Slightly lighter gray */
          }
 
          .dark-mode .action-button:hover {
-             color: #d1d5db; /* Tailwind gray-300 */
+             color: #bbb; /* Lighter gray on hover */
          }
 
          .dark-mode .submit-button {
-             background-color: #3b82f6; /* Tailwind blue-500 */
+             background-color: #007bff; /* A standard blue for contrast */
              color: white;
-             box-shadow: 5px 5px 10px #1d4ed8,
-                        -5px -5px 10px #60a5fa; /* Dark mode blue shadow */
+             box-shadow: 4px 4px 8px #0056b3,
+                        -4px -4px 8px #00aaff; /* Blue shadow */
          }
          .dark-mode .submit-button:hover {
-             background-color: #2563eb; /* Tailwind blue-600 */
-             box-shadow: 2px 2px 5px #1d4ed8,
-                        -2px -2px 5px #60a5fa; /* Smaller dark mode blue shadow */
+             background-color: #0056b3; /* Darker blue on hover */
+             box-shadow: 2px 2px 4px #0056b3,
+                        -2px -2px 4px #00aaff; /* Smaller blue shadow */
          }
          .dark-mode .submit-button:active {
-              background-color: #1d4ed8; /* Tailwind blue-700 */
-              box-shadow: inset 3px 3px 7px #1d4ed8,
-                        inset -3px -3px 7px #60a5fa; /* Inset dark mode blue shadow */
+              background-color: #003f7f; /* Even darker blue on active */
+              box-shadow: inset 3px 3px 6px #0056b3,
+                        inset -3px -3px 6px #00aaff; /* Inset blue shadow */
          }
 
          .dark-mode .message {
@@ -386,31 +406,80 @@
 
          .dark-mode .attempts-display,
          .dark-mode .previous-guesses {
-             color: #9ca3af; /* Tailwind gray-400 */
+             color: #999; /* Slightly lighter gray */
          }
 
          .dark-mode .restart-button {
-            background-color: #374151; /* Tailwind gray-700 */
-            color: #d1d5db; /* Tailwind gray-300 */
-            box-shadow: 5px 5px 10px #1f2937,
-                        -5px -5px 10px #4b5563; /* Dark mode shadow */
+            background-color: #333; /* Dark gray */
+            color: #eee; /* Light text */
+            box-shadow: 4px 4px 8px #111,
+                        -4px -4px 8px #444; /* Dark mode shadow */
          }
          .dark-mode .restart-button:hover {
-             background-color: #4b5563; /* Tailwind gray-600 */
-             box-shadow: 2px 2px 5px #1f2937,
-                        -2px -2px 5px #4b5563; /* Smaller dark mode shadow */
+             background-color: #444; /* Slightly lighter gray on hover */
+             box-shadow: 2px 2px 4px #111,
+                        -2px -2px 4px #444; /* Smaller dark mode shadow */
          }
          .dark-mode .restart-button:active {
-             background-color: #6b7280; /* Tailwind gray-500 */
-              box-shadow: inset 3px 3px 7px #1f2937,
-                        inset -3px -3px 7px #4b5563; /* Inset dark mode shadow */
+             background-color: #555; /* Even lighter gray on active */
+              box-shadow: inset 3px 3px 6px #111,
+                        inset -3px -3px 6px #444; /* Inset dark mode shadow */
          }
 
          .dark-mode .theme-toggle-button {
-             color: #d1d5db; /* Light icon in dark mode */
+             color: #bbb; /* Light icon in dark mode */
+             box-shadow: 3px 3px 7px #111,
+                        -3px -3px 7px #333; /* Dark mode shadow for the button */
          }
          .dark-mode .theme-toggle-button:hover {
-             color: #f3f4f6; /* Lighter icon on hover */
+             color: #eee; /* Lighter icon on hover */
+             box-shadow: 1px 1px 3px #111,
+                        -1px -1px 3px #333; /* Smaller dark mode shadow on hover */
+         }
+         .dark-mode .theme-toggle-button:active {
+             box-shadow: inset 2px 2px 5px #111,
+                        inset -2px -2px 5px #333; /* Inset dark mode shadow on active */
+         }
+
+         /* Winning Number Animation */
+         .winning-number-animation {
+             position: absolute;
+             bottom: 2rem; /* Start from below the guess display */
+             left: 50%;
+             transform: translateX(-50%); /* Center horizontally */
+             font-size: 2.5em; /* Larger font size for animation */
+             font-weight: 700; /* Bold font */
+             color: #22c55e; /* Green color for winning */
+             opacity: 0; /* Start invisible */
+             pointer-events: none; /* Don't block clicks */
+             z-index: 5; /* Below the theme toggle, above other elements */
+             font-family: 'Lato', sans-serif; /* Use Lato font for animation */
+         }
+
+         /* Keyframes for the firing animation */
+         @keyframes fireUp {
+             0% {
+                 opacity: 0;
+                 transform: translate(-50%, 0); /* Start position (centered horizontally, at bottom) */
+             }
+             50% {
+                 opacity: 1;
+                 transform: translate(-50%, -80px); /* Move up and become visible */
+             }
+             100% {
+                 opacity: 0;
+                 transform: translate(-50%, -150px); /* Continue moving up and fade out */
+             }
+         }
+
+         /* Class to apply the animation */
+         .winning-number-animation.animate {
+             animation: fireUp 1.5s ease-out forwards; /* Apply the animation */
+         }
+
+         /* Dark mode color for the winning number animation */
+         body.dark-mode .winning-number-animation {
+             color: #4ade80; /* Tailwind green-400 for dark mode */
          }
 
     </style>
@@ -429,6 +498,8 @@
 
             <h1 class="text-xl sm:text-2xl font-bold">Guess the Number!</h1>
             <div id="guessDisplay" class="guess-display text-xl sm:text-2xl"></div>
+
+            <div id="winningNumberAnimation" class="winning-number-animation"></div>
 
             <p id="message" class="message text-base sm:text-lg"></p>
             <p id="guesses" class="attempts-display text-sm sm:text-base"></p>
@@ -475,6 +546,7 @@
         const body = document.body; // Reference to the body element
         const gameInfoContainer = document.getElementById('gameInfoContainer'); // Reference to the info container
         const gameKeyboardContainer = document.getElementById('gameKeyboardContainer'); // Reference to the keyboard container
+        const winningNumberAnimationElement = document.getElementById('winningNumberAnimation'); // Element for the animation
 
 
         // Function to start a new game
@@ -494,6 +566,11 @@
             restartButton.classList.add('hidden'); // Hide restart button
             // Reset message class - remove specific color classes
             messageElement.className = 'message text-base sm:text-lg';
+
+            // Ensure animation element is hidden and reset
+            winningNumberAnimationElement.textContent = '';
+            winningNumberAnimationElement.classList.remove('animate');
+
 
             // Enable keyboard buttons
             const buttons = keyboard.querySelectorAll('button');
@@ -527,6 +604,7 @@
                 messageElement.textContent = `Congratulations! You guessed the number ${secretNumber} in ${attempts} attempts!`;
                 // Set message class for success color
                 messageElement.className = 'message text-base sm:text-lg text-green-600';
+                triggerWinningAnimation(secretNumber); // Trigger the animation
                 endGame(true); // End the game on win
             } else if (attempts >= maxAttempts) {
                  messageElement.textContent = `Game Over! The secret number was ${secretNumber}.`;
@@ -548,6 +626,19 @@
             currentGuessString = '';
             guessDisplay.textContent = '';
         }
+
+        // Function to trigger the winning number animation
+        function triggerWinningAnimation(number) {
+            winningNumberAnimationElement.textContent = number; // Set the number
+            winningNumberAnimationElement.classList.add('animate'); // Add the animation class
+
+            // Remove the animation class after the animation finishes
+            setTimeout(() => {
+                winningNumberAnimationElement.classList.remove('animate');
+                winningNumberAnimationElement.textContent = ''; // Clear the number
+            }, 1500); // Match the animation duration (1.5s)
+        }
+
 
         // Function to end the game
         function endGame(won) {
@@ -629,8 +720,8 @@
 
         // Apply saved theme and start the game when the page loads
         window.onload = function() {
-            applyTheme();
-            startGame();
+            applyTheme(); // Apply theme preference first
+            startGame(); // Then start the game
         };
 
     </script>
