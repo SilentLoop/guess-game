@@ -183,65 +183,44 @@
         }
 
 
-        /* Input and Button Container */
-        .input-container {
-            display: flex;
-            gap: 1rem;
-            margin-bottom: 1.5rem;
+        /* Keyboard Layout */
+        .keyboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(40px, 1fr)); /* Responsive columns */
+            gap: 8px; /* Gap between buttons */
+            margin-bottom: 1.5rem; /* Space below keyboard */
             width: 100%; /* Take full width */
-            justify-content: center; /* Center items */
+            max-width: 400px; /* Limit max width */
+            margin-left: auto;
+            margin-right: auto; /* Center the keyboard */
         }
 
-        .letter-input {
-            padding: 0.75rem;
-            font-size: 1.2em;
-            border: none;
-            border-radius: 0.75rem;
-            text-align: center;
-            width: 60px; /* Fixed width for input */
-            background-color: #e0e5ec;
-            box-shadow: inset 3px 3px 7px #bebebe,
-                        inset -3px -3px 7px #ffffff;
-            color: #1e293b;
-            transition: all 0.2s ease;
-            font-family: 'Quicksand', sans-serif; /* Use Quicksand font */
-            font-weight: 600;
-            text-transform: uppercase; /* Uppercase input */
-        }
-
-        .letter-input:focus {
-             outline: none;
-             box-shadow: inset 2px 2px 5px #bebebe,
-                        inset -2px -2px 5px #ffffff;
-        }
-
-
-        .guess-letter-button {
-            padding: 0.75rem 1.5rem;
-            font-size: 1.2em;
+        .keyboard-button {
+            padding: 0.8rem 0.5rem; /* Padding for smaller buttons */
+            font-size: 1em; /* Font size for letters */
             font-weight: 600; /* Quicksand Semi-bold */
             border: none;
-            border-radius: 0.75rem;
+            border-radius: 0.5rem; /* Slightly less rounded */
             cursor: pointer;
-            transition: all 0.2s ease;
-            background-color: #60a5fa; /* Tailwind blue-400 */
-            color: white;
-            box-shadow: 5px 5px 10px #93c5fd,
-                        -5px -5px 10px #ffffff;
-             font-family: 'Quicksand', sans-serif; /* Use Quicksand font */
+            transition: all 0.2s ease; /* Smooth transition for hover/active */
+            background-color: #e0e5ec; /* Match container background */
+            box-shadow: 4px 4px 8px #bebebe,
+                        -4px -4px 8px #ffffff; /* Soft Neumorphic shadow */
+            color: #334155; /* Tailwind slate-700 */
+            text-transform: uppercase; /* Uppercase letters */
         }
 
-        .guess-letter-button:hover {
-            background-color: #3b82f6; /* Tailwind blue-500 */
-             box-shadow: 2px 2px 5px #60a5fa,
-                        -2px -2px 5px #ffffff;
-         }
-         .guess-letter-button:active {
-             background-color: #2563eb; /* Tailwind blue-600 */
-             box-shadow: inset 3px 3px 7px #60a5fa,
-                        inset -3px -3px 7px #ffffff;
-         }
+        .keyboard-button:hover {
+             box-shadow: 2px 2px 4px #bebebe,
+                        -2px -2px 4px #ffffff; /* Smaller shadow on hover */
+             color: #1e293b; /* Darker text on hover */
+        }
 
+        .keyboard-button:active {
+             box-shadow: inset 3px 3px 6px #bebebe,
+                        inset -3px -3px 6px #ffffff; /* Inset shadow on active (pressed) */
+             color: #0f172a; /* Even darker text when pressed */
+        }
 
          .message {
              margin-top: 1.5rem; /* Increased spacing */
@@ -254,7 +233,7 @@
          /* Colors for messages */
          .message.text-green-600 { color: #22c55e; } /* Tailwind green-500 */
          .message.text-orange-600 { color: #f97316; } /* Tailwind orange-500 */
-         .message.text-red-600 { color: #ef4444; } /* Tailwind red-500 */
+         .message.text-red-600 { color: #ef4444; } /* Tailwind red-600 */
 
 
          .attempts-display {
@@ -347,6 +326,13 @@
              color: #bbb; /* Lighter text */
          }
 
+         .dark-mode .guess-display { /* This style is for the number game, but kept for consistency if needed */
+             background-color: #222; /* Match container background */
+             color: #eee; /* Light text */
+             box-shadow: inset 4px 4px 8px #111,
+                        inset -4px -4px 8px #333; /* Dark mode inset shadow */
+         }
+
          .dark-mode .word-display {
              background-color: #222; /* Match container background */
              color: #eee; /* Light text */
@@ -354,37 +340,7 @@
                         inset -4px -4px 8px #333; /* Dark mode inset shadow */
          }
 
-         .dark-mode .letter-input {
-             background-color: #222;
-             color: #eee;
-              box-shadow: inset 3px 3px 7px #111,
-                        inset -3px -3px 7px #333;
-         }
-         .dark-mode .letter-input:focus {
-              box-shadow: inset 2px 2px 5px #111,
-                        inset -2px -2px 5px #333;
-         }
-
-
-         .dark-mode .guess-letter-button {
-             background-color: #007bff; /* A standard blue for contrast */
-             color: white;
-             box-shadow: 4px 4px 8px #0056b3,
-                        -4px -4px 8px #00aaff; /* Blue shadow */
-         }
-         .dark-mode .guess-letter-button:hover {
-             background-color: #0056b3; /* Darker blue on hover */
-             box-shadow: 2px 2px 4px #0056b3,
-                        -2px -2px 4px #00aaff; /* Smaller blue shadow */
-         }
-         .dark-mode .guess-letter-button:active {
-              background-color: #003f7f; /* Even darker blue on active */
-              box-shadow: inset 3px 3px 6px #0056b3,
-                        inset -3px -3px 6px #00aaff; /* Inset blue shadow */
-         }
-
-
-         .dark-mode .keyboard-button { /* This style is for the number game, but kept for consistency if needed */
+         .dark-mode .keyboard-button {
              background-color: #222; /* Match container background */
              color: #bbb; /* Lighter button text */
              box-shadow: 4px 4px 8px #111,
@@ -401,14 +357,6 @@
               box-shadow: inset 3px 3px 6px #111,
                         inset -3px -3px 6px #333; /* Inset dark mode shadow on active */
               color: #fff; /* Lightest text when pressed */
-         }
-
-         .dark-mode .action-button { /* This style is for the number game, but kept for consistency if needed */
-             color: #999; /* Slightly lighter gray */
-         }
-
-         .dark-mode .action-button:hover { /* This style is for the number game, but kept for consistency if needed */
-             color: #bbb; /* Lighter gray on hover */
          }
 
 
@@ -549,7 +497,7 @@
 </head>
 <body>
     <p class="welcome-text">
-        Welcome to the Guess the Word game! Try to guess the secret word by entering one letter at a time.
+        Welcome to the Guess the Word game! Try to guess the secret word by guessing one letter at a time.
         You have a limited number of incorrect guesses. Good luck!
     </p>
 
@@ -577,11 +525,9 @@
         </div>
 
         <div class="game-keyboard-container" id="gameKeyboardContainer">
-             <div class="input-container">
-                <input type="text" id="letterInput" class="letter-input" maxlength="1" autocomplete="off">
-                <button id="guessLetterButton" class="guess-letter-button">Guess Letter</button>
-             </div>
-             </div>
+             <div id="keyboard" class="keyboard-grid">
+                 </div>
+        </div>
     </div>
 
     <script>
@@ -598,14 +544,39 @@
         const messageElement = document.getElementById('message');
         const guessesElement = document.getElementById('guesses');
         const incorrectGuessesElement = document.getElementById('incorrectGuesses');
-        const letterInput = document.getElementById('letterInput');
-        const guessLetterButton = document.getElementById('guessLetterButton');
+        // Removed references to letterInput and guessLetterButton
         const restartButton = document.getElementById('restartGame');
         const themeToggle = document.getElementById('themeToggle');
         const body = document.body; // Reference to the body element
         const gameInfoContainer = document.getElementById('gameInfoContainer'); // Reference to the info container
         const gameKeyboardContainer = document.getElementById('gameKeyboardContainer'); // Reference to the keyboard container
         const winningWordAnimationElement = document.getElementById('winningWordAnimation'); // Element for the animation
+        const keyboard = document.getElementById('keyboard'); // Reference to the keyboard container
+
+
+        // Function to create the keyboard buttons
+        function createKeyboard() {
+            const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            keyboard.innerHTML = ''; // Clear existing buttons
+
+            for (let i = 0; i < letters.length; i++) {
+                const button = document.createElement('button');
+                button.classList.add('keyboard-button');
+                button.textContent = letters[i];
+                button.addEventListener('click', handleLetterClick);
+                keyboard.appendChild(button);
+            }
+        }
+
+        // Function to handle a letter button click
+        function handleLetterClick(event) {
+            const guessedLetter = event.target.textContent; // Get the letter from the button
+
+            // Disable the clicked button immediately
+            event.target.disabled = true;
+
+            handleGuess(guessedLetter); // Pass the guessed letter to the main guess handling function
+        }
 
 
         // Function to start a new game
@@ -621,9 +592,6 @@
             messageElement.textContent = '';
             guessesElement.textContent = `Incorrect Guesses Left: ${maxIncorrectAttempts - incorrectAttempts}`;
             incorrectGuessesElement.textContent = 'Incorrect Guesses: ';
-            letterInput.value = ''; // Clear input field
-            letterInput.disabled = false; // Enable input
-            guessLetterButton.disabled = false; // Enable guess button
             restartButton.classList.add('hidden'); // Hide restart button
             // Reset message class - remove specific color classes
             messageElement.className = 'message text-base sm:text-lg';
@@ -632,30 +600,29 @@
             winningWordAnimationElement.textContent = '';
             winningWordAnimationElement.classList.remove('animate');
 
-             letterInput.focus(); // Set focus to the input field
+            createKeyboard(); // Recreate the keyboard for a new game
+
         }
 
-        // Function to handle a letter guess
-        function handleGuess() {
-            const guess = letterInput.value.toUpperCase(); // Get input and convert to uppercase
-            letterInput.value = ''; // Clear input field after getting value
-            letterInput.focus(); // Set focus back to input
-
-            // Validate input
+        // Function to handle a letter guess (now accepts the letter directly)
+        function handleGuess(guess) {
+            // Validate input (already done by keyboard structure, but good for safety)
             if (guess.length !== 1 || !/^[A-Z]$/.test(guess)) {
-                messageElement.textContent = 'Please enter a single letter (A-Z).';
+                messageElement.textContent = 'Invalid input.'; // Should not happen with keyboard
                 messageElement.className = 'message text-base sm:text-lg text-red-600';
                 return;
             }
 
-            // Check if letter has already been guessed
+            // Check if letter has already been guessed (disabled button handles this visually)
             if (guessedLetters.includes(guess)) {
-                messageElement.textContent = `You already guessed the letter "${guess}". Try a different one.`;
+                 // This case should be less frequent with disabled buttons, but kept for logic
+                messageElement.textContent = `You already guessed the letter "${guess}".`;
                 messageElement.className = 'message text-base sm:text-lg text-orange-600';
                 return;
             }
 
             guessedLetters.push(guess); // Add the guessed letter to the list
+
 
             // Check if the letter is in the secret word
             if (secretWord.includes(guess)) {
@@ -668,7 +635,10 @@
                     if (secretWord[i] === guess) {
                         newMaskedWord += guess;
                     } else {
-                        newMaskedWord += maskedWord[i];
+                        // Find the character in the current maskedWord string at index i
+                        // and append it to the newMaskedWord.
+                        // This is necessary because maskedWord is a string of underscores and correctly guessed letters.
+                         newMaskedWord += maskedWord[i];
                     }
                 }
                 maskedWord = newMaskedWord;
@@ -713,8 +683,10 @@
 
         // Function to end the game
         function endGame(won) {
-             letterInput.disabled = true; // Disable input
-             guessLetterButton.disabled = true; // Disable guess button
+             // Disable all keyboard buttons
+             const buttons = keyboard.querySelectorAll('button');
+             buttons.forEach(button => button.disabled = true);
+
              restartButton.classList.remove('hidden'); // Show restart button
         }
 
@@ -762,12 +734,6 @@
 
 
         // Add event listeners
-        guessLetterButton.addEventListener('click', handleGuess);
-        letterInput.addEventListener('keypress', function(event) {
-            if (event.key === 'Enter') {
-                handleGuess();
-            }
-        });
         restartButton.addEventListener('click', startGame);
         themeToggle.addEventListener('click', toggleTheme); // Add event listener for theme toggle
 
